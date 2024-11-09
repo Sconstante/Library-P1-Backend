@@ -62,7 +62,7 @@ ES: Este proyecto es un backend para un sistema de gestión de bibliotecas. Prop
 - `PATCH /book` - Update book data (requires token) / Actualizar datos del libro (requiere token)
 - `DELETE /book/:bookId` - Delete a book (requires token) / Eliminar un libro (requiere token)
 - `POST /book/reserve` - Reserve a book (requires token) / Reservar un libro (requiere token)
-- `POST /book/return` - Return a book (requires token) / Devolver un libro (requiere token)
+- `PATCH /book/return` - Return a book (requires token) / Devolver un libro (requiere token)
 
 ## License / Licencia
 
