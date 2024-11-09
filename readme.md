@@ -2,9 +2,9 @@
 
 ## Description / Descripción
 
-EN: This project is a backend for a library management system. It provides functionalities for user authentication, book management, and user management.
+EN: This project is a backend for a library management system. Provides functionalities for user authentication, book management, user management, book reservation and return.
 
-ES: Este proyecto es un backend para un sistema de gestión de bibliotecas. Proporciona funcionalidades para la autenticación de usuarios, gestión de libros y gestión de usuarios.
+ES: Este proyecto es un backend para un sistema de gestión de bibliotecas. Proporciona funcionalidades para la autenticación de usuarios, gestión de libros, gestión de usuarios, reserva y retorno de libros.
 
 ## Installation / Instalación
 
