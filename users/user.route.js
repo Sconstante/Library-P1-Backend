@@ -21,7 +21,7 @@ const handleRequest = (controller) => async (req, res) => {
 router.post("/register", handleRequest(signUp));
 router.post("/login", handleRequest(login));
 router.patch("/", tokenVerification, handleRequest(updateUserData));
-router.delete("/", tokenVerification, handleRequest(deleteUser));
-router.get("/", handleRequest(getUserData));
+router.delete("/:userId", tokenVerification, handleRequest(deleteUser));
+router.get("/:userId", handleRequest(getUserData));
 
 module.exports = router;

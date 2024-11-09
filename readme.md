@@ -51,16 +51,16 @@ ES: Este proyecto es un backend para un sistema de gestión de bibliotecas. Prop
 - `POST /user/register` - Register a new user / Registrar un nuevo usuario
 - `POST /user/login` - Login a user / Iniciar sesión de un usuario
 - `PATCH /user` - Update user data (requires token) / Actualizar datos del usuario (requiere token)
-- `DELETE /user` - Delete a user (requires token) / Eliminar un usuario (requiere token)
-- `GET /user` - Get user data / Obtener datos del usuario
+- `DELETE /user/:userId` - Delete a user (requires token) / Eliminar un usuario (requiere token)
+- `GET /user/:userId` - Get user data / Obtener datos del usuario
 
 ### Book Routes / Rutas de Libros
 
 - `POST /book` - Create a new book (requires token) / Crear un nuevo libro (requiere token)
 - `GET /book` - Get list of books / Obtener lista de libros
-- `GET /book/details` - Get book details / Obtener detalles del libro
+- `GET /book/:bookId` - Get book details / Obtener detalles del libro
 - `PATCH /book` - Update book data (requires token) / Actualizar datos del libro (requiere token)
-- `DELETE /book` - Delete a book (requires token) / Eliminar un libro (requiere token)
+- `DELETE /book/:bookId` - Delete a book (requires token) / Eliminar un libro (requiere token)
 - `POST /book/reserve` - Reserve a book (requires token) / Reservar un libro (requiere token)
 - `POST /book/return` - Return a book (requires token) / Devolver un libro (requiere token)
 

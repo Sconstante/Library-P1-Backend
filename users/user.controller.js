@@ -108,15 +108,13 @@ async function updateUserData(req, res) {
 
 async function deleteUser(req, res) {
   const { userId: requesterId } = req;
-  const { email: userEmail } = req.query; // Correo del usuario a inhabilitar
-
+  const { userId } = req.params; // ID del usuario a inhabilitar
   if (!requesterId) {
     return res.status(400).json({ error: "No user id provided" });
   }
-
   try {
     const requester = await getUserById(requesterId);
-    const userToDisable = await getUser(userEmail, true);
+    const userToDisable = await getUserById(userId);
     if (!userToDisable) {
       return res.status(404).json({ error: "User to disable doesn't exist" });
     }
@@ -127,11 +125,9 @@ async function deleteUser(req, res) {
     ) {
       return res.status(403).json({ error: "Permission denied" });
     }
-
     if (userToDisable.softDelete) {
       return res.status(400).json({ error: "User is already disabled" });
     }
-
     await softDeleteUser(userToDisable._id);
     res.status(200).json({ message: "User disabled successfully" });
   } catch (error) {
@@ -140,16 +136,17 @@ async function deleteUser(req, res) {
 }
 
 async function getUserData(req, res) {
-  const { email, includeDisabled } = req.query; // Correo del usuario a obtener y si incluir deshabilitados
+  const { userId } = req.params;
+  const { includeDisabled } = req.query;
 
-  if (!email) {
-      return res.status(400).json({ error: "No email provided" });
+  if (!userId) {
+    return res.status(400).json({ error: "No user id provided" });
   }
 
-  const user = await getUser(email, includeDisabled === 'true');
+  const user = await getUserById(userId, includeDisabled === 'true');
 
   if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    return res.status(404).json({ error: "User not found" });
   }
 
   res.status(200).json(user);

@@ -90,34 +90,26 @@ async function updateBookData(req, res) {
 }
 
 async function deleteBook(req, res) {
-  const { id } = req.query; // Obtener el bookId de los query params
+  const { bookId } = req.params; // Obtener el bookId de los path params
   const { userId } = req;
-
-  if (!id) {
+  if (!bookId) {
     return res.status(400).json({ error: "No book id provided" });
   }
-
   const requester = await getUserById(userId);
   if (!requester || !requester.permissions.includes("disable_books")) {
     return res.status(403).json({ error: "Permission denied" });
   }
-
   try {
     // Convertir bookId a ObjectId
-    const bookObjectId = new mongoose.Types.ObjectId(id);
-
+    const bookObjectId = new mongoose.Types.ObjectId(bookId);
     const book = await getBookById(bookObjectId, true);
-
     if (!book) {
       return res.status(404).json({ error: "Book not found" });
     }
-
     if (book.softDelete) {
       return res.status(400).json({ error: "Book is already disabled" });
     }
-
     await softDeleteBook(bookObjectId);
-
     res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {
     console.error(`Error converting bookId to ObjectId: ${error.message}`);
@@ -183,14 +175,15 @@ async function getBooksList(req, res) {
 }
 
 async function getBookDetails(req, res) {
-  const { id, includeDisabled } = req.query;
+  const { bookId } = req.params;
+  const { includeDisabled } = req.query;
 
-  if (!id) {
+  if (!bookId) {
     return res.status(400).json({ error: "No book id provided" });
   }
 
   // Convertir bookId a ObjectId
-  const bookObjectId = new mongoose.Types.ObjectId(id);
+  const bookObjectId = new mongoose.Types.ObjectId(bookId);
 
   const book = await getBookById(bookObjectId, includeDisabled === "true");
 

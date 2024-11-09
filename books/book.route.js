@@ -22,9 +22,9 @@ const handleRequest = (controller) => async (req, res) => {
 
 router.post("/", tokenVerification, handleRequest(createNewBook));
 router.get("/", handleRequest(getBooksList));
-router.get("/details", handleRequest(getBookDetails));
+router.get("/:bookId", handleRequest(getBookDetails));
 router.patch("/", tokenVerification, handleRequest(updateBookData));
-router.delete("/", tokenVerification, handleRequest(deleteBook));
+router.delete("/:bookId", tokenVerification, handleRequest(deleteBook));
 router.post("/reserve", tokenVerification, handleRequest(reserveaBook));
 router.post("/return", tokenVerification, handleRequest(returnaBook));
 
