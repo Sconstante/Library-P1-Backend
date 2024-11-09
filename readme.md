@@ -9,35 +9,38 @@ ES: Este proyecto es un backend para un sistema de gestión de bibliotecas. Prop
 ## Installation / Instalación
 
 1. Clone the repository / Clonar el repositorio:
-    ```bash
-    git clone https://github.com/yourusername/Library-P1-Backend.git
-    ```
+
+   ```bash
+   git clone https://github.com/yourusername/Library-P1-Backend.git
+   ```
 
 2. Navigate to the project directory / Navegar al directorio del proyecto:
-    ```bash
-    cd Library-P1-Backend
-    ```
+
+   ```bash
+   cd Library-P1-Backend
+   ```
 
 3. Install dependencies / Instalar dependencias:
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 ## Configuration / Configuración
 
 1. Create a `.env` file in the root directory and add the following environment variables / Crear un archivo `.env` en el directorio raíz y agregar las siguientes variables de entorno:
-    ```properties
-    DB_USER="your_db_user"
-    DB_PASSWORD="your_db_password"
-    JWT_KEY="your_jwt_key"
-    ```
+   ```properties
+   DB_USER="your_db_user"
+   DB_PASSWORD="your_db_password"
+   JWT_KEY="your_jwt_key"
+   ```
 
 ## Running the Project / Ejecutar el Proyecto
 
 1. Start the server / Iniciar el servidor:
-    ```bash
-    npm start
-    ```
+
+   ```bash
+   node index.js
+   ```
 
 2. The server will run on port 3000 by default / El servidor se ejecutará en el puerto 3000 por defecto.
 
