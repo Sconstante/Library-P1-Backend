@@ -26,6 +26,5 @@ router.get("/:bookId", handleRequest(getBookDetails));
 router.patch("/", tokenVerification, handleRequest(updateBookData));
 router.delete("/:bookId", tokenVerification, handleRequest(deleteBook));
 router.post("/reserve", tokenVerification, handleRequest(reserveaBook));
-router.post("/return", tokenVerification, handleRequest(returnaBook));
-
+router.patch("/return", tokenVerification, handleRequest(returnaBook));
 module.exports = router;
