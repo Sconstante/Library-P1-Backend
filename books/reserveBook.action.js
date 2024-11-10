@@ -11,6 +11,11 @@ const mongoose = require("mongoose");
  * @throws {Error} - Si el libro, el usuario no se encuentran o no hay copias disponibles.
  */
 async function reserveBook(userId, bookId, returnDate) {
+  // Verificar si el ID del libro es válido
+  if (!mongoose.Types.ObjectId.isValid(bookId)) {
+    throw new Error("Book not found");
+  }
+
   // Buscar el libro por su ID
   const book = await BookModel.findById(bookId);
   // Buscar el usuario por su ID

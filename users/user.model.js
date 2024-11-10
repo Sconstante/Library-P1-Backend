@@ -6,6 +6,7 @@ const reservationSchema = new mongoose.Schema(
     bookName: { type: String, required: true },
     reservationDate: { type: Date, default: Date.now },
     returnDate: { type: Date },
+    returned: { type: Boolean, default: false },
   },
   { versionKey: false }
 );

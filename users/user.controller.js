@@ -27,7 +27,7 @@ async function signUp(req, res) {
       .status(200)
       .json({ authorization: token, message: "User created successfully", user: newUser });
   } catch (error) {
-    res.status(500).json({ error: "Error creating user: " + error.message });
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -67,13 +67,14 @@ async function updateUserData(req, res) {
 
   const requester = await getUserById(requesterId);
   if (!requester) {
-    return res.status(403).json({ error: "Permission denied" });
+    return res.status(403).json({ error: "Invalid authentication token" });
   }
 
   const userToUpdate = await getUser(userEmail);
   if (!userToUpdate) {
     return res.status(404).json({ error: "User doesn't exist" });
   }
+
 
   // Permitir que un usuario se modifique a sí mismo sin verificar permisos
   if (
@@ -83,11 +84,13 @@ async function updateUserData(req, res) {
     return res.status(403).json({ error: "Permission denied" });
   }
 
+
   // Verificar si el nuevo correo electrónico ya existe
   if (email && email !== userToUpdate.email) {
-    const existingUser = await getUser(email);
+    const existingUser = await getUser(email, includeDisabled = true);
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
+      
     }
   }
 
@@ -110,13 +113,13 @@ async function deleteUser(req, res) {
   const { userId: requesterId } = req;
   const { userId } = req.params; // ID del usuario a inhabilitar
   if (!requesterId) {
-    return res.status(400).json({ error: "No user id provided" });
+    return res.status(400).json({ error: "Invalid authentication token" });
   }
   try {
     const requester = await getUserById(requesterId);
-    const userToDisable = await getUserById(userId);
+    const userToDisable = await getUserById(userId, includeDisabled = true);
     if (!userToDisable) {
-      return res.status(404).json({ error: "User to disable doesn't exist" });
+      return res.status(401).json({ error: "User to disable doesn't exist" });
     }
     if (
       !requester ||

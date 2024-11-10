@@ -32,7 +32,10 @@ async function createNewBook(req, res) {
   }
 
   const requester = await getUserById(requesterId);
-  if (!requester || !requester.permissions.includes("create_books")) {
+  if (!requester) {
+    return res.status(401).json({ error: "Invalid authentication token" });
+  }
+  if (!requester.permissions.includes("create_books")) {
     return res.status(403).json({ error: "Permission denied" });
   }
 
@@ -66,7 +69,11 @@ async function updateBookData(req, res) {
   }
 
   const requester = await getUserById(requesterId);
-  if (!requester || !requester.permissions.includes("update_books")) {
+  if (!requester) {
+    return res.status(401).json({ error: "Invalid authentication token" });
+  }
+
+  if (!requester.permissions.includes("update_books")) {
     return res.status(403).json({ error: "Permission denied" });
   }
 
@@ -96,7 +103,10 @@ async function deleteBook(req, res) {
     return res.status(400).json({ error: "No book id provided" });
   }
   const requester = await getUserById(userId);
-  if (!requester || !requester.permissions.includes("disable_books")) {
+  if (!requester) {
+    return res.status(401).json({ error: "Invalid authentication token" });
+  }
+  if (!requester.permissions.includes("disable_books")) {
     return res.status(403).json({ error: "Permission denied" });
   }
   try {
@@ -112,7 +122,6 @@ async function deleteBook(req, res) {
     await softDeleteBook(bookObjectId);
     res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {
-    console.error(`Error converting bookId to ObjectId: ${error.message}`);
     return res.status(400).json({ error: "Invalid book id provided" });
   }
 }
@@ -145,13 +154,11 @@ async function getBooksList(req, res) {
     (param) => !validParams.includes(param)
   );
   if (invalidParams.length > 0) {
-    return res
-      .status(400)
-      .json({
-        error: `Invalid query parameters: ${invalidParams.join(
-          ", "
-        )}. Valid parameters are: ${validParams.join(", ")}`,
-      });
+    return res.status(400).json({
+      error: `Invalid query parameters: ${invalidParams.join(
+        ", "
+      )}. Valid parameters are: ${validParams.join(", ")}`,
+    });
   }
 
   if (name) filter.name = name;
@@ -190,32 +197,41 @@ async function getBookDetails(req, res) {
   if (!book) {
     return res.status(404).json({ error: "Book not found" });
   }
-
   res.status(200).json({ book });
 }
 
-
 async function reserveaBook(req, res) {
-    const { bookId, returnDate } = req.body;
-    const { userId } = req;
+  const { bookId, returnDate } = req.body;
+  const { userId } = req;
 
-    try {
-        const { book, user } = await reserveBook(userId, bookId, returnDate);
-        res.status(200).json({ message: 'Book reserved successfully', book, user });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+  const requester = await getUserById(userId);
+  if (!requester) {
+    return res.status(401).json({ error: "Invalid authentication token" });
+  }
+
+  try {
+    const { book, user } = await reserveBook(userId, bookId, returnDate);
+    res.status(200).json({ message: "Book reserved successfully", book, user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 }
 
 async function returnaBook(req, res) {
-    const { reservationId } = req.body;
+  const { reservationId } = req.body;
+  const { userId } = req;
 
-    try {
-        const { book, user } = await returnBook(reservationId);
-        res.status(200).json({ message: 'Book returned successfully', book, user });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+  const requester = await getUserById(userId);
+  if (!requester) {
+    return res.status(401).json({ error: "Invalid authentication token" });
+  }
+
+  try {
+    const { book, user } = await returnBook(userId, reservationId);
+    res.status(200).json({ message: "Book returned successfully", book, user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 }
 
 module.exports = {
@@ -225,5 +241,5 @@ module.exports = {
   getBooksList,
   getBookDetails,
   reserveaBook,
-  returnaBook
+  returnaBook,
 };
